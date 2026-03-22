@@ -1,0 +1,71 @@
+version: "3"
+
+vars:
+  COMP_NAME: default
+
+tasks:
+  setup:
+    desc: Install dependencies and download competition data
+    cmds:
+      - uv sync --dev
+      - task: download
+
+  download:
+    desc: Download competition data from Kaggle
+    cmds:
+      - kaggle competitions download -c {{.COMP_NAME}} -p data/raw
+      - cd data/raw && unzip -o "*.zip" && rm -f *.zip
+    preconditions:
+      - sh: command -v kaggle
+        msg: "kaggle CLI not found. Run: uv pip install kaggle"
+
+  train:
+    desc: Run training pipeline
+    cmds:
+      - uv run python scripts/train.py {{.CLI_ARGS}}
+
+  predict:
+    desc: Run inference and generate submission
+    cmds:
+      - uv run python scripts/predict.py {{.CLI_ARGS}}
+
+  submit:
+    desc: Submit latest (or specified) submission to Kaggle
+    vars:
+      FILE: '{{.FILE | default ""}}'
+    cmds:
+      - |
+        FILE="{{.FILE}}"
+        if [ -z "$FILE" ]; then
+          FILE=$(ls -t outputs/submissions/submission_*.csv 2>/dev/null | head -1)
+        fi
+        if [ -z "$FILE" ]; then
+          echo "No submission files found in outputs/submissions/"
+          exit 1
+        fi
+        echo "Submitting: $FILE"
+        kaggle competitions submit -c {{.COMP_NAME}} -f "$FILE" -m "submission"
+
+  lint:
+    desc: Run linter and format check
+    cmds:
+      - uv run ruff check src/ scripts/ tests/
+      - uv run ruff format --check src/ scripts/ tests/
+
+  format:
+    desc: Auto-format code
+    cmds:
+      - uv run ruff format src/ scripts/ tests/
+      - uv run ruff check --fix src/ scripts/ tests/
+
+  test:
+    desc: Run tests
+    cmds:
+      - uv run pytest tests/ -v
+
+  clean:
+    desc: Clear outputs and reset logs
+    cmds:
+      - rm -rf outputs/models/* outputs/oof/* outputs/submissions/*
+      - rm -f logs/*.json logs/*.csv
+      - echo "Cleaned outputs and logs"

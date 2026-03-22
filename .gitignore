@@ -1,0 +1,20 @@
+# Data & large outputs
+data/raw/*
+data/processed/*
+!data/**/.gitkeep
+outputs/models/*
+outputs/submissions/*
+!outputs/**/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,32 @@
+[project]
+name = "kaggle-comp"
+version = "0.1.0"
+description = "Kaggle competition workspace"
+requires-python = ">=3.14"
+dependencies = [
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "scikit-learn>=1.5",
+    "lightgbm>=4.3",
+]
+
+[project.optional-dependencies]
+dl = [
+    "torch>=2.2",
+    "torchvision>=0.17",
+]
+dev = [
+    "ruff>=0.4",
+    "pytest>=8.0",
+    "kaggle>=1.6",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
