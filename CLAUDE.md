@@ -1,3 +1,42 @@
+# BirdCLEF+ 2026 - Acoustic Species Identification
+
+## Competition Info
+
+- **URL:** https://www.kaggle.com/competitions/birdclef-2026
+- **Deadline:** 2026-06-03 23:59 UTC
+- **Prize:** $50,000 + Working Note Bonus $5,000
+- **Category:** Research
+- **Organizer:** Cornell Lab of Ornithology, TU Chemnitz, Google DeepMind
+
+## Task
+
+南米パンタナール地域の音響録音データから鳥の種を識別する。150,000+ km² の湿地帯に設置された1,000以上の音響レコーダーからのデータを使用。650以上の鳥種が対象。
+
+## Evaluation
+
+- **Metric:** Modified ROC-AUC（マルチラベル分類）
+- True-positive ラベルがないクラスはスキップ
+- 確率値とロジット値の両方を受け付け（[0,1]外の値にはシグモイドを自動適用）
+
+## Submission Format
+
+- CSV: `row_id` + 各鳥種ごとのカラム（確率値）
+- 各行は5秒間の音声ウィンドウに対応
+- 約10,932種の予測
+
+## Data
+
+- 音声フォーマット: 32,000 Hz
+- 5秒チャンクに分割して予測
+- フィールドレコーダーからのリアルワールド音声データ
+
+## Special Rules
+
+- マルチラベル分類（1つの音声セグメントに複数種が存在可能）
+- Code Competition（Kaggle Notebook ベース）
+
+---
+
 # Kaggle Competition Workspace
 
 ## Structure
