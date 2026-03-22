@@ -35,6 +35,24 @@
 - マルチラベル分類（1つの音声セグメントに複数種が存在可能）
 - Code Competition（Kaggle Notebook ベース）
 
+## Documentation
+
+**IMPORTANT: Before starting any implementation work, you MUST read the relevant docs first.**
+
+- [docs/overview.md](docs/overview.md) — Competition description, goal, background
+- [docs/evaluation.md](docs/evaluation.md) — Evaluation metric, scoring methodology
+- [docs/submission.md](docs/submission.md) — Submission format, file structure, requirements
+- [docs/timeline.md](docs/timeline.md) — Important dates and deadlines
+- [docs/rules.md](docs/rules.md) — Full competition rules
+- [docs/prizes.md](docs/prizes.md) — Prize structure
+
+### Required Reading Order
+
+1. Before EDA or feature engineering → read `overview.md` and `evaluation.md`
+2. Before building submission pipeline → read `submission.md`
+3. Before using external data or models → read `rules.md`
+4. Before final submission → read `timeline.md` to confirm deadlines
+
 ---
 
 # Kaggle Competition Workspace
