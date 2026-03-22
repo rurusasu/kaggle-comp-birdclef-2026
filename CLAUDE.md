@@ -35,6 +35,29 @@
 - マルチラベル分類（1つの音声セグメントに複数種が存在可能）
 - Code Competition（Kaggle Notebook ベース）
 
+## Lessons Learned
+
+### データ読み込みのボトルネック
+
+1. **zip からの逐次読み込みは極めて遅い**: 35,549 ファイルを zip 内から 1 つずつ読むと、1 epoch に数時間かかる。ローカル学習では事前に展開（`extract_audio_to_dir()`）が必須。
+2. **15GB の展開**: ディスク容量に注意。SSD 推奨。展開後は `data/processed/train_audio/` にキャッシュされるので 2 回目以降は高速。
+
+### CPU 制約
+
+3. **Kaggle 提出は CPU 90分制限**: GPU Notebook は 1 分制限で実質使えない。推論パイプラインは CPU で高速に動く必要がある。
+4. **EfficientNet-B0 は CPU 推論に適切**: 軽量モデルを選択する理由。B3 以上は 90 分に収まらない可能性。
+
+### モデル学習
+
+5. **ローカル RTX 4060 で学習可能**: EfficientNet-B0 は 8GB VRAM に余裕で収まる。batch_size=32 で OK。
+6. **学習済みモデルは Kaggle Dataset にアップロード**: `kaggle datasets create` → Notebook の `model_sources` でマウント。
+
+### データの特性
+
+7. **35,549 train recordings (206 species)** vs **234 target species**: 28 種は train_audio に存在しない。soundscape labels や taxonomy から補完が必要。
+8. **深刻なクラス不均衡**: 上位種 ~500 サンプル、下位種 1-3 サンプル。focal loss や oversampling を検討。
+9. **マルチラベル**: 1 つの 5 秒ウィンドウに複数種が存在。BCEWithLogitsLoss が適切。
+
 ## Documentation
 
 **IMPORTANT: Before starting any implementation work, you MUST read the relevant docs first.**
