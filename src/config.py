@@ -4,7 +4,7 @@ from pathlib import Path
 
 @dataclass
 class Config:
-    competition_name: str = "default"
+    competition_name: str = "birdclef-2026"
     seed: int = 42
     n_folds: int = 5
 
